@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JIYYAD TOOLS — AM BULK V5</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --surface: #121820;
+      --surface-2: #1a2330;
+      --border: #243044;
+      --text: #e8eef7;
+      --muted: #8b9bb4;
+      --accent: #8b5cf6;
+      --accent-hover: #7c3aed;
+      --success: #22c55e;
+      --error: #ef4444;
+      --radius: 14px;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 15% -10%, rgba(139, 92, 246, 0.2), transparent),
+        radial-gradient(ellipse 60% 40% at 90% 100%, rgba(34, 197, 94, 0.07), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 640px;
+      animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 26px 28px 18px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      box-shadow: 0 4px 16px rgba(139, 92, 246, 0.45);
+    }
+
+    .logo h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: #c4b5fd;
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .body { padding: 22px 28px 28px; }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .form-group { flex: 1; }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.22);
+    }
+
+    .btn {
+      flex-shrink: 0;
+      padding: 12px 22px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 130px;
+      height: 46px;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+    }
+
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .btn .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    .btn.loading .spinner { display: block; }
+    .btn.loading .btn-text { display: none; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .status {
+      margin-top: 16px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      display: none;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .status.show { display: block; }
+    .status.info {
+      background: rgba(139, 92, 246, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      color: #c4b5fd;
+    }
+    .status.success {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+      color: #4ade80;
+    }
+    .status.error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      color: #f87171;
+    }
+
+    .results {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .result-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      animation: fadeUp 0.35s ease both;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .result-box:hover {
+      border-color: #3b4a63;
+      transform: translateY(-1px);
+    }
+
+    .result-box .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .result-box .num {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #a78bfa;
+      background: rgba(139, 92, 246, 0.15);
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    .result-box .copy-btn {
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .result-box .copy-btn:hover {
+      color: var(--text);
+      border-color: #3b4a63;
+    }
+
+    .result-box .copy-btn.copied {
+      color: var(--success);
+      border-color: rgba(34, 197, 94, 0.4);
+    }
+
+    .field { margin-bottom: 10px; }
+    .field:last-child { margin-bottom: 0; }
+
+    .field-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .field-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text);
+      word-break: break-all;
+      line-height: 1.4;
+    }
+
+    .field-value.email { color: #67e8f9; }
+    .field-value a { color: #34d399; text-decoration: none; }
+    .field-value a:hover { text-decoration: underline; }
+    .field-value.order { color: #94a3b8; font-size: 0.8rem; }
+
+    .empty-state {
+      text-align: center;
+      padding: 28px 16px;
+      color: var(--muted);
+      font-size: 0.875rem;
+      display: none;
+    }
+    .empty-state.show { display: block; }
+
+    .footer {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .footer span { color: #64748b; }
+
+    @media (max-width: 520px) {
+      .form-row { flex-direction: column; align-items: stretch; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <div class="logo">
+          <div class="logo-icon">⚡</div>
+          <h1>JIYYAD TOOLS</h1>
+        </div>
+        <p class="subtitle">AM Bulk Generator</p>
+        <span class="badge">V5 · Secure</span>
+      </div>
+
+      <div class="body">
+        <form id="bulkForm" autocomplete="off">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="count">Jumlah (Count)</label>
+              <input type="number" id="count" min="1" max="50" value="1" required />
+            </div>
+            <button type="submit" class="btn" id="submitBtn">
+              <span class="btn-text">Generate</span>
+              <span class="spinner"></span>
+            </button>
+          </div>
+        </form>
+
+        <div class="status" id="status"></div>
+        <div class="results" id="results"></div>
+        <div class="empty-state" id="emptyState">Hasil akan muncul di sini</div>
+      </div>
+    </div>
+
+    <p class="footer">
+      Powered by <strong>JIYYAD TOOLS</strong> · <span>AM BULK V5</span>
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('bulkForm');
+    const resultsEl = document.getElementById('results');
+    const statusEl = document.getElementById('status');
+    const emptyState = document.getElementById('emptyState');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Frontend hanya panggil proxy lokal (tidak langsung ke API)
+    const PROXY = '/api/bulk';
+
+    function showStatus(type, text) {
+      statusEl.className = 'status show ' + type;
+      statusEl.textContent = text;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function createBox(item, index) {
+      const box = document.createElement('div');
+      box.className = 'result-box';
+      box.style.animationDelay = (index * 0.06) + 's';
+
+      const email = item.email || '-';
+      const inbox = item.inboxUrl || '#';
+      const order = item.orderId || '-';
+
+      box.innerHTML = `
+        <div class="top">
+          <span class="num">#${index + 1}</span>
+          <button type="button" class="copy-btn">Copy Email</button>
+        </div>
+        <div class="field">
+          <div class="field-label">Email</div>
+          <div class="field-value email">${escapeHtml(email)}</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Inbox</div>
+          <div class="field-value">
+            <a href="${escapeHtml(inbox)}" target="_blank" rel="noopener">${escapeHtml(inbox)}</a>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">Order ID</div>
+          <div class="field-value order">${escapeHtml(order)}</div>
+        </div>
+      `;
+
+      box.querySelector('.copy-btn').addEventListener('click', function () {
+        navigator.clipboard.writeText(email).then(() => {
+          this.textContent = 'Copied!';
+          this.classList.add('copied');
+          setTimeout(() => {
+            this.textContent = 'Copy Email';
+            this.classList.remove('copied');
+          }, 1500);
+        });
+      });
+
+      return box;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const count = document.getElementById('count').value.trim();
+      if (!count || Number(count) < 1) return;
+
+      submitBtn.disabled = true;
+      submitBtn.classList.add('loading');
+      resultsEl.innerHTML = '';
+      emptyState.classList.remove('show');
+      showStatus('info', 'Sedang generate... mohon tunggu');
+
+      try {
+        const res = await fetch(PROXY, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ count: String(count) })
+        });
+
+        const data = await res.json();
+
+        if (data.status === true) {
+          const results = data.results || [];
+          if (results.length > 0) {
+            showStatus('success', 'Berhasil generate ' + results.length + ' akun');
+            results.forEach((item, i) => resultsEl.appendChild(createBox(item, i)));
+          } else {
+            showStatus('info', data.message || 'Proses berjalan di background');
+            emptyState.classList.add('show');
+          }
+        } else {
+          showStatus('error', data.message || 'Gagal memproses');
+          emptyState.classList.add('show');
+        }
+      } catch (err) {
+        showStatus('error', 'Error: ' + err.message + ' — pastikan server sudah dijalankan (npm start)');
+        emptyState.classList.add('show');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+      }
+    });
+
+    emptyState.classList.add('show');
+  </script>
+</body>
+</html>
